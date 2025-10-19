@@ -66,12 +66,16 @@ def clean_file(in_path: Path, out_path: Path, ts_col="timestamp", v_col_candidat
             # Dados (V₁,T₁) y (V₂,T₂):
             # H(V) = T₁ + (T₂ - T₁) * (V - V₁) / (V₂ - V₁)
             #
-            # donde: H(0.4V) = -30C, H(5.6V) = 120C
-            # V₁ = 0.4V, T₁ = -30C
-            # V₂ = 5.6V, T₂ = 120C
+            # H(0.4V) = -30C, H(5.6V) = 120C
+            # A Kelvin
+            # H(0.4V) = 243.15K, H(5.6V) = 393.15K
+            # V₁ = 0.4V, T₁ = 243.15K
+            # V₂ = 5.6V, T₂ = 393.15K
 
-            temp=-30+(120-(-30))*(v-0.4)/(5.6-0.4)
-            
+            temp = 243.15 + (393.15 - 243.15) * (v - 0.4) / (5.6 - 0.4)
+
+            temp -= 273.15  # Convertir a °C
+
             writer.writerow({
                 "timestamp": t.strftime("%Y-%m-%dT%H:%M:%S"),
                 "voltage_V": f"{v:.3f}",
